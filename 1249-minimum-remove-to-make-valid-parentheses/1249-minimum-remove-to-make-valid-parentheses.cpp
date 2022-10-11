@@ -1,26 +1,23 @@
 class Solution {
 public:
-    string minRemoveToMakeValid(string s) {
-        unordered_set<int> set;
-        stack<int> stk;
+    string remove_invalid(string s, char open, char close) {
+        int count = 0;
         string ans;
         for (int i = 0; i < s.size(); ++i) {
-            if (s[i] == '(') {
-                stk.push(i);
-            }
-            else if (s[i] == ')'){
-                if (stk.size() == 0) set.insert(i);
-                else stk.pop();
-            }
-        }
-        while (!stk.empty()) {
-            set.insert(stk.top());
-            stk.pop();
-        }
-        for (int i = 0; i < s.size(); ++i) {
-            if (set.find(i) == set.end()) 
-                ans.push_back(s[i]);
-        }
+            if (s[i] == close && count == 0) continue;
+            if (s[i] == open) 
+                ++count;
+            else if (s[i] == close && count != 0) 
+                --count;
+            ans.push_back(s[i]);
+        } 
         return ans;
+    }
+    string minRemoveToMakeValid(string s) {
+        string str = remove_invalid(s,'(',')');
+        reverse(str.begin(), str.end());
+        str = remove_invalid(str, ')', '(');
+        reverse(str.begin(), str.end());
+        return str;
     }
 };
