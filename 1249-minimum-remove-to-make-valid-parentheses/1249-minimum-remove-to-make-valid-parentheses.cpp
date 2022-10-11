@@ -3,19 +3,14 @@ public:
     string minRemoveToMakeValid(string s) {
         unordered_set<int> set;
         stack<int> stk;
-        int count = 0;
         string ans;
         for (int i = 0; i < s.size(); ++i) {
             if (s[i] == '(') {
-                ++count;
                 stk.push(i);
             }
             else if (s[i] == ')'){
-                if (count == 0) set.insert(i);
-                else {
-                    --count;
-                    stk.pop();
-                }
+                if (stk.size() == 0) set.insert(i);
+                else stk.pop();
             }
         }
         while (!stk.empty()) {
