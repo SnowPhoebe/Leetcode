@@ -1,41 +1,35 @@
 class Solution {
 public:
     string decodeString(string s) {
-        stack<char> stk;
+        stack<string> str_stk;
+        stack<int> num_stk;
+        string curr_str = "";
+        string curr_num = "";
         for (int i = 0; i < s.size(); ++i) {
-            stk.push(s[i]);
-            if (stk.top() == ']') {
-                stk.pop();
-                string temp_str;
-                while (stk.top() >= 'a' && stk.top() <= 'z') {
-                    temp_str.push_back(stk.top());
-                    stk.pop();
-                }
-                reverse(temp_str.begin(), temp_str.end());
-                stk.pop();
-                int digit = 1;
-                int num = 0;
-                while (!stk.empty() && isdigit(stk.top())) {
-                    num += digit*(stk.top()-'0');
-                    digit *= 10;
-                    stk.pop();
-                }
-                string ans;
-                for (int m = 0; m < num; ++m) {
-                    ans += temp_str;
-                }
-                for (int n = 0; n < ans.size(); ++n) {
-                    stk.push(ans[n]);
-                } 
+            if (s[i] >= 'a' && s[i] <= 'z') {
+                curr_str += s[i];
             }
-            
+            else if (isdigit(s[i])) {
+                curr_num += s[i];
+            }
+            else if (s[i] == '[') {
+                str_stk.push(curr_str);
+                num_stk.push(stoi(curr_num));
+                curr_str = "";
+                curr_num = "";
+            }
+            else {
+                int number = num_stk.top();
+                num_stk.pop();
+                string temp_str = str_stk.top();
+                str_stk.pop();
+                for (int m = 0; m < number; ++m) {
+                    temp_str += curr_str;
+                }
+                curr_str = temp_str;
+            }
         }
-        string res;
-        while (!stk.empty()) {
-            res.push_back(stk.top());
-            stk.pop();
-        }
-        reverse(res.begin(), res.end());
-        return res;
+        return curr_str;
+        
     }
 };
