@@ -1,21 +1,21 @@
 class OrderedStream {
 public:
     OrderedStream(int n) {
-        vec.resize(n+1,"A");
         index = 1;
     }
     
     vector<string> insert(int idKey, string value) {
-        vec[idKey] = value;
+        pq.push({idKey,value});
         vector<string> ans;
-        while (index < vec.size() && vec[index] != "A") {
-            ans.push_back(vec[index]);
+        while (!pq.empty() && pq.top().first == index) {
+            ans.push_back(pq.top().second);
+            pq.pop();
             ++index;
         }
         return ans;
     }
 private:
-    vector<string> vec;
+    priority_queue<pair<int,string>, vector<pair<int,string>>, greater<pair<int,string>>> pq;
     int index;
 };
 
