@@ -9,7 +9,7 @@ public:
     }
     
     void checkOut(int id, string stationName, int t) {
-        if (check_in.find(id) == check_in.end()) return;
+        // if (check_in.find(id) == check_in.end()) return;
         string name = check_in[id].first;
         int start_time = check_in[id].second;
         name += "-"+stationName;
